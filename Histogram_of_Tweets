@@ -1,0 +1,8 @@
+-- Twitter SQL Interview Question
+-- my solution using data aggregation and sunqueries
+SELECT tweet_bucket, COUNT(*) AS users_num
+FROM (SELECT user_id, COUNT(*) AS tweet_bucket
+FROM tweets
+WHERE EXTRACT(YEAR FROM tweet_date) = 2022
+GROUP BY user_id) AS user_tweet_counts
+GROUP BY tweet_bucket
