@@ -1,0 +1,14 @@
+-- PayPal SQL Interview Question
+-- My solution using the concept of subqueries and data aggregation
+
+SELECT account_id, 
+       SUM(CASE WHEN transaction_type = 'Deposit' THEN total_amount END) -
+       SUM(CASE WHEN transaction_type = 'Withdrawal' THEN total_amount END) AS account_balance
+       FROM (
+SELECT account_id, 
+       transaction_type,
+       SUM(amount) AS total_amount
+FROM transactions       
+GROUP BY account_id, transaction_type
+) AS new
+GROUP BY account_id
