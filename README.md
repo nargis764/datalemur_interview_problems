@@ -1,2 +1,1 @@
-I created this repository to include my solutions to datalemur data science interview questions that I attempted and solved. Here is the link for all the questions:
-https://datalemur.com/questions.
+This repository showcases my solutions to the DataLemur data science interview questions I solved, with the full set of questions available here: [DataLemur Questions](https://datalemur.com/questions).
