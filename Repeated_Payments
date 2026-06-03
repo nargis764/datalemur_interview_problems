@@ -1,0 +1,14 @@
+-- Stripe SQL Interview Question
+-- My solution using CTEs and WINDOW functions
+
+WITH cte AS (
+ SELECT merchant_id, credit_card_id, 
+        amount,
+        transaction_timestamp,
+        LAG(transaction_timestamp) OVER(PARTITION BY merchant_id, credit_card_id, 
+       amount ORDER BY transaction_timestamp) AS previous_timestamp
+FROM transactions 
+)
+SELECT COUNT(merchant_id) AS payment_count
+FROM cte
+WHERE EXTRACT(MINUTES FROM (transaction_timestamp - previous_timestamp)) < 10
