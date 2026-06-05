@@ -1,0 +1,8 @@
+-- Microsoft SQL Interview Question
+-- my solution
+
+SELECT customer_contracts.customer_id
+FROM customer_contracts 
+JOIN products p ON customer_contracts.product_id = p.product_id
+GROUP BY customer_contracts.customer_id
+HAVING COUNT(DISTINCT p.product_category) = (SELECT COUNT(DISTINCT product_category) FROM products);
