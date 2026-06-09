@@ -1,0 +1,14 @@
+def weakest_strong_link(strength):
+  row_min = []
+  
+  column_matrix = [[0 for _ in range(len(strength))] for _ in range(len(strength[0]))]
+  for i in range(0, len(strength)):
+    row_min.append(min(strength[i]))    
+    for j in range(0, len(strength[i])):
+      column_matrix[j][i] = strength[i][j]
+ 
+  column_max = [max(column_matrix[i]) for i in range(len(column_matrix))]
+  if set(row_min) & set(column_max):
+    return list(set(row_min) & set(column_max))[0]
+  else:
+    return -1 
