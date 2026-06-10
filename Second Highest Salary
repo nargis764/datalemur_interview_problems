@@ -1,0 +1,6 @@
+SELECT salary as second_highest_salary
+FROM (SELECT name, 
+             salary, 
+             ROW_NUMBER() OVER(ORDER BY salary DESC) as row_name
+FROM employee) AS ranked_salary
+WHERE row_name = 2
