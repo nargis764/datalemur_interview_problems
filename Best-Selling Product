@@ -1,0 +1,22 @@
+WITH cte1 AS (
+SELECT category_name, 
+       product_name,
+       SUM(rating) AS total_rating, 
+       sum(sales_quantity) AS total_quantity
+FROM products
+JOIN product_sales ON 
+products.product_id = product_sales.product_id
+GROUP BY category_name, product_name
+ORDER BY category_name, product_name
+),
+cte2 AS(
+SELECT category_name,
+       product_name,
+       total_quantity,
+       total_rating,
+       ROW_NUMBER() OVER (PARTITION BY category_name ORDER BY total_quantity DESC, total_rating DESC) AS row_num
+FROM cte1
+)
+SELECT category_name, product_name
+FROM cte2
+WHERE row_num = 1;
