@@ -1,0 +1,13 @@
+WITH cte1 AS (
+SELECT order_id, item,
+(ROW_NUMBER() OVER(ORDER BY order_id) - 1)/2 AS pair_id
+FROM orders
+)
+SELECT c1.order_id AS corrected_order_id, c2.item
+FROM cte1 c1
+ JOIN cte1 c2 ON c1.pair_id = c2.pair_id AND c1.order_id <> c2.order_id
+ UNION ALL
+ SELECT order_id AS corrected_order_id, 
+        item FROM orders
+ WHERE order_id = (SELECT MAX(order_id) FROM orders) 
+        AND (SELECT COUNT(*) FROM orders) % 2 = 1;
