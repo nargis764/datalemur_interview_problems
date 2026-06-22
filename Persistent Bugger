@@ -1,0 +1,14 @@
+from functools import reduce
+
+def persistence(n):
+    product = n 
+    numbers = [int(i) for i in str(n)] 
+    counter = 0 
+
+    while len(str(product)) > 1: 
+        product = reduce(lambda x, y: x * y, numbers) # 729
+        numbers = [int(i) for i in str(product)]   
+        counter += 1 
+
+    return counter
+        
