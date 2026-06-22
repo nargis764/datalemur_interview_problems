@@ -1,0 +1,12 @@
+WITH cte1 AS (
+SELECT DATE_PART('year', call_date) AS yr,
+DATE_PART('month', call_date) AS mth,
+COUNT(call_duration_secs) AS num_calls
+FROM callers
+WHERE call_duration_secs > 300
+GROUP BY yr, mth
+ORDER BY yr, mth)
+SELECT yr, 
+       mth,
+       ROUND(100.0 * (num_calls - LAG(num_calls) OVER(ORDER BY mth))/ NULLIF(LAG(num_calls) OVER(ORDER BY mth), 0), 1) AS long_calls_growth_pct
+FROM cte1
