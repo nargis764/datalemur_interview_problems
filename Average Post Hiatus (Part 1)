@@ -1,0 +1,13 @@
+SELECT user_id, 
+DATE_PART('day', last_post_date - first_post_date) AS days_between
+FROM (
+SELECT * ,
+COUNT(post_id) OVER(PARTITION BY user_id) AS post_counts,
+MIN(post_date) OVER(PARTITION BY user_id) AS first_post_date,
+MAX(post_date) OVER(PARTITION BY user_id) AS last_post_date
+FROM posts 
+WHERE DATE_PART('year', post_date) = 2021
+) AS t
+WHERE post_counts > 1
+GROUP BY user_id, first_post_date, last_post_date
+ORDER BY days_between
