@@ -1,0 +1,9 @@
+SELECT counts AS unique_queries, 
+ COUNT(*) AS employee_count
+FROM (SELECT employees.employee_id as e_employee, 
+       COUNT(CASE WHEN DATE_PART('month', query_starttime) BETWEEN 7 AND 9 THEN query_id END) AS counts
+FROM employees 
+LEFT JOIN queries ON employees.employee_id = queries.employee_id
+GROUP BY employees.employee_id) sq
+GROUP BY counts
+ORDER BY counts
