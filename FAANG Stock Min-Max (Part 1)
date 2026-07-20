@@ -1,0 +1,14 @@
+WITH cte1 AS (SELECT ticker,
+MAX(open) as max_val,
+MIN(open) as min_val
+FROM stock_prices
+GROUP BY ticker)
+SELECT cte1.ticker,
+MAX(CASE WHEN max_val = open THEN TO_CHAR(date, 'Mon-YYYY') END) AS highest_mth,
+MAX(max_val) as highest_open,
+MIN(CASE WHEN min_val = open THEN TO_CHAR(date, 'Mon-YYYY') END) AS lowest_mth,
+MIN(min_val) as lowest_open
+FROM cte1
+JOIN stock_prices ON cte1.min_val = stock_prices.open OR cte1.max_val = stock_prices.open
+GROUP BY cte1.ticker
+ORDER BY ticker
