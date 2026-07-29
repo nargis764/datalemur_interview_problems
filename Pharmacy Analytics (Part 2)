@@ -1,0 +1,12 @@
+WITH cte1 AS (
+SELECT *,
+(total_sales - cogs) AS diff
+FROM pharmacy_sales
+)
+SELECT manufacturer,
+COUNT(*) AS drug_count,
+SUM(ABS(diff)) AS total_loss
+FROM cte1
+WHERE diff < 0
+GROUP BY manufacturer
+ORDER BY total_loss DESC;
