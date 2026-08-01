@@ -1,0 +1,9 @@
+WITH cte1 AS (SELECT user_id,
+transaction_date as first_time,
+LEAD(transaction_date, 1) OVER(PARTITION BY user_id ORDER BY transaction_date) AS second_time,
+LEAD(transaction_date, 2) OVER(PARTITION BY user_id ORDER BY transaction_date) AS third_time
+FROM transactions)
+SELECT user_id
+FROM cte1
+WHERE second_time::date - first_time::date = 1 AND 
+third_time::date - first_time::date = 2;
