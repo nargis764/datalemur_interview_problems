@@ -1,0 +1,15 @@
+WITH cte1 AS (
+SELECT c.caller_id, 
+c.receiver_id,
+i.country_id AS caller_country
+FROM phone_calls c
+JOIN phone_info i ON c.caller_id = i.caller_id
+),
+cte2 AS (SELECT c.caller_id, 
+c.receiver_id,
+c.caller_country,
+i.country_id as receiver_country
+FROM cte1 c
+JOIN phone_info i ON c.receiver_id = i.caller_id)
+SELECT Round(100.0 * (COUNT(*) - COUNT(CASE WHEN caller_country = receiver_country THEN 1 END))/COUNT(*),1) AS international_calls_pct
+     FROM cte2
