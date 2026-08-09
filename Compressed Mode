@@ -1,0 +1,13 @@
+WITH cte1 AS (
+SELECT order_occurrences,
+item_count,
+COUNT(*) OVER(PARTITION BY order_occurrences) AS counts
+FROM items_per_order 
+),
+cte2 AS (SELECT RANK() OVER(ORDER BY counts DESC, order_occurrences DESC) AS rank,
+*
+FROM cte1
+)
+SELECT item_count AS mode FROM cte2
+WHERE rank = 1
+ORDER BY MODE
