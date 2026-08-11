@@ -1,0 +1,18 @@
+WITH cte1 AS (
+SELECT user_id, 
+event_type,
+DATE_PART('month', event_date) AS num_month
+FROM user_actions
+WHERE event_type IN('sign-in', 'like','comment')
+),
+cte2 AS (
+SELECT user_id, 
+COUNT (DISTINCT num_month) AS cnt
+FROM cte1
+WHERE num_month IN(6, 7)
+GROUP BY user_id
+)
+SELECT 7 AS month,
+COUNT(user_id) AS monthly_active_users
+FROM cte2
+WHERE cnt=2
