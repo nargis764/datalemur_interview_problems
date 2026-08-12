@@ -1,3 +1,4 @@
+WITH cte1 AS (
 SELECT searches,
 num_users,
 SUM(num_users) OVER(ORDER BY searches) AS result
